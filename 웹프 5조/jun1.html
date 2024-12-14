@@ -78,10 +78,10 @@
             display: inline-block;
         }
         .correct {
-            background-color: #c8f7c5; /* 초록색 */
+            background-color: #c8f7c5; 
         }
         .wrong {
-            background-color: #f7c5c5; /* 빨간색 */
+            background-color: #f7c5c5; 
         }
     </style>
 </head>
@@ -132,7 +132,7 @@
         const photoContainer = document.getElementById("photoContainer");
         const images = Array.from(photoContainer.querySelectorAll(".photo-item"));
 
-        // 제출 버튼 클릭 이벤트
+        
         submitButton.addEventListener("click", () => {
             let correctCount = 0;
             const inputs = document.querySelectorAll(".photo-item input");
@@ -154,30 +154,30 @@
             resultMessage.textContent = `총 맞춘 개수: ${correctCount} / ${inputs.length}`;
         });
 
-        // 초기화 버튼 클릭 이벤트
+        
         resetButton.addEventListener("click", () => {
-            // 입력 초기화
+            
             const inputs = document.querySelectorAll(".photo-item input");
             inputs.forEach(input => {
-                input.value = ""; // 입력 초기화
-                input.classList.remove("correct", "wrong"); // 하이라이팅 초기화
+                input.value = ""; 
+                input.classList.remove("correct", "wrong"); 
             });
-            resultMessage.textContent = ""; // 결과 메시지 초기화
+            resultMessage.textContent = ""; 
 
-            // 이미지 섞기
+            
             shuffleImages();
         });
 
-        // 이미지 섞기 함수
+        
         function shuffleImages() {
-            const shuffled = images.sort(() => Math.random() - 0.5); // 랜덤 정렬
-            photoContainer.innerHTML = ""; // 기존 이미지 제거
+            const shuffled = images.sort(() => Math.random() - 0.5); 
+            photoContainer.innerHTML = ""; 
             shuffled.forEach(img => {
-                photoContainer.appendChild(img); // 섞인 이미지 다시 추가
+                photoContainer.appendChild(img); 
             });
         }
 
-        // 초기 실행 시 이미지 섞기
+        
         shuffleImages();
     </script>
 </body>

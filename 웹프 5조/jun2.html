@@ -34,10 +34,10 @@
             cursor: pointer;
         }
         .photo-item img.highlight {
-            border-color: #4caf50; /* 초록색 */
+            border-color: #4caf50; 
         }
         .photo-item img.wrong-highlight {
-            border-color: #f44336; /* 빨간색 */
+            border-color: #f44336; 
         }
         .buttons {
             margin-top: 30px;
@@ -121,12 +121,12 @@
 
         let selectedImages = [];
 
-        // 이미지 클릭 이벤트
+        
         images.forEach((img) => {
             const imageElement = img.querySelector("img");
             imageElement.addEventListener("click", () => {
                 if (imageElement.classList.contains("highlight")) {
-                    // 선택 해제
+                    
                     imageElement.classList.remove("highlight");
                     selectedImages = selectedImages.filter((item) => item !== img);
                 } else {
@@ -134,15 +134,15 @@
                         errorMessage.textContent = "최대 6개의 이미지만 선택할 수 있습니다.";
                         return;
                     }
-                    // 선택 추가
+                    
                     imageElement.classList.add("highlight");
                     selectedImages.push(img);
-                    errorMessage.textContent = ""; // 에러 메시지 초기화
+                    errorMessage.textContent = ""; 
                 }
             });
         });
 
-        // 제출 버튼 클릭 이벤트
+        
         submitButton.addEventListener("click", () => {
             let correctCount = 0;
 
@@ -159,9 +159,9 @@
             resultMessage.textContent = `총 맞춘 개수: ${correctCount} / 6`;
         });
 
-        // 다시 풀기 버튼 클릭 이벤트
+        
         resetButton.addEventListener("click", () => {
-            // 초기화
+            
             resultMessage.textContent = "";
             errorMessage.textContent = "";
             selectedImages = [];
@@ -170,11 +170,11 @@
                 imageElement.classList.remove("highlight", "wrong-highlight");
             });
 
-            // 이미지 랜덤 섞기
+            
             shuffleImages();
         });
 
-        // 이미지 섞기 함수
+        
         function shuffleImages() {
             const shuffled = images.sort(() => Math.random() - 0.5);
             photoContainer.innerHTML = "";
@@ -183,7 +183,7 @@
             });
         }
 
-        // 초기 실행 시 이미지 섞기
+        
         shuffleImages();
     </script>
 </body>
