@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>속담찾기</title>
+</head>
+<body>
+
+    <h1>속담찾기</h1>
+
+    <div id="problem">
+        <p>다음 그림과 알맞은 속담을 연결해보세요.</p>
+    </div>
+
+    <div id="container">
+        <div id="column1">
+            <div id="image-container1">
+                <img src="그림1.jpg" alt="그림1" id="image1">
+                <img src="그림2.jpg" alt="그림2" id="image2">
+                <img src="그림3.jpg" alt="그림3" id="image3">
+                <img src="그림4.jpg" alt="그림4" id="image4">
+            </div>
+        </div>
+
+        <div id="column2">
+            <div id="image-container2">
+                <img src="속담1.jpg" alt="속담1" id="proverb1">
+                <img src="속담2.jpg" alt="속담2" id="proverb2">
+                <img src="속담3.jpg" alt="속담3" id="proverb3">
+                <img src="속담4.jpg" alt="속담4" id="proverb4">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applyStyles() {
+            const container = document.querySelector('#container');
+            container.style.display = 'flex';
+            container.style.justifyContent = 'space-between';
+            container.style.marginTop = '20px';
+
+            const columns = [document.querySelector('#column1'), document.querySelector('#column2')];
+            columns.forEach(column => {
+                column.style.width = '45%';
+                column.style.display = 'flex';
+                column.style.flexDirection = 'column';
+                column.style.alignItems = 'center';
+                column.style.gap = '10px';
+                column.style.height = '100%';
+            });
+
+            const problem = document.querySelector('#problem');
+            problem.style.fontSize = '18px';
+            problem.style.fontWeight = 'bold';
+            problem.style.marginBottom = '20px';
+
+            const imageContainers = [document.querySelector('#image-container1'), document.querySelector('#image-container2')];
+            imageContainers.forEach(container => {
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
+                container.style.gap = '10px';
+                container.style.height = '100%';
+            });
+
+            const images = [
+                document.querySelector('#image1'),
+                document.querySelector('#image2'),
+                document.querySelector('#image3'),
+                document.querySelector('#image4'),
+                document.querySelector('#proverb1'),
+                document.querySelector('#proverb2'),
+                document.querySelector('#proverb3'),
+                document.querySelector('#proverb4')
+            ];
+            images.forEach(img => {
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.objectFit = 'cover';
+                img.style.margin = '0 auto';
+                img.style.border = '1px solid #ccc';
+                img.style.borderRadius = '5px';
+                img.style.cursor = 'pointer';
+                img.style.transition = 'transform 0.3s, box-shadow 0.3s';
+            });
+        }
+
+        let selectedItem = null;
+        let correctAnswers = 0; 
+
+        function imageClickHandler(event) {
+            const clickedElement = event.target;
+
+            if (clickedElement.getAttribute('data-selected') || clickedElement.getAttribute('data-disabled')) {
+                return;
+            }
+
+            clickedElement.setAttribute('data-selected', 'true');
+            clickedElement.style.border = '3px solid #FF6347';
+            clickedElement.style.boxShadow = '0 0 10px rgba(255, 99, 71, 0.8)';
+
+            if (!selectedItem) {
+                selectedItem = clickedElement;
+            } else {
+                checkAnswer(selectedItem, clickedElement);
+                selectedItem = null;
+            }
+        }
+
+        function checkAnswer(selectedItem, clickedItem) {
+            const selectedId = selectedItem.id;
+            const clickedId = clickedItem.id;
+
+            if (
+                (selectedId === "image1" && clickedId === "proverb3") ||
+                (selectedId === "image2" && clickedId === "proverb4") ||
+                (selectedId === "image3" && clickedId === "proverb1") ||
+                (selectedId === "image4" && clickedId === "proverb2") ||
+                (selectedId === "proverb3" && clickedId === "image1") ||
+                (selectedId === "proverb4" && clickedId === "image2") ||
+                (selectedId === "proverb1" && clickedId === "image3") ||
+                (selectedId === "proverb2" && clickedId === "image4")
+            ) {
+                correctAnswers++;
+                alert("정답입니다!");
+                disableImages(selectedItem, clickedItem);
+                checkAllAnswers();
+                
+            } else {
+                alert("오답입니다.");
+                resetSelection(selectedItem, clickedItem);
+            }
+        }
+
+        function disableImages(selectedItem, clickedItem) {
+            selectedItem.removeEventListener('click', imageClickHandler);
+            clickedItem.removeEventListener('click', imageClickHandler);
+
+            selectedItem.setAttribute('data-disabled', 'true');
+            clickedItem.setAttribute('data-disabled', 'true');
+        }
+
+        function resetSelection(selectedItem, clickedItem) {
+            selectedItem.removeAttribute('data-selected');
+            clickedItem.removeAttribute('data-selected');
+            selectedItem.style.border = '1px solid #ccc';
+            selectedItem.style.boxShadow = '';
+            clickedItem.style.border = '1px solid #ccc';
+            clickedItem.style.boxShadow = '';
+        }
+        
+        function checkAllAnswers() {
+            if (correctAnswers === 4) { 
+                setTimeout(() => {
+                    alert("축하합니다! 모든 정답을 맞췄습니다!");
+                }, 500);
+            }
+        }
+
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', imageClickHandler);
+        });
+
+        applyStyles();
+    </script>
+
+</body>
+</html>

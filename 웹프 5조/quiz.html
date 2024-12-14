@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>변비에 좋은 음식</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9); 
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 80%; 
+            max-width: 600px; 
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        button.reset {
+            background-color: red;
+        }
+
+        button.reset:hover {
+            background-color: darkred;
+        }
+
+        #timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+        }
+
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>변비에 좋은 음식 기억하기</h2>
+        <p>앞서 기억해 둔 <strong>변비에 좋은 식품</strong>을 적어보세요.</p>
+        <table>
+            <tr>
+                <td><input type="text" placeholder="식품 1" class="input-field"></td>
+                <td><input type="text" placeholder="식품 2" class="input-field"></td>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="식품 3" class="input-field"></td>
+                <td><input type="text" placeholder="식품 4" class="input-field"></td>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="식품 5" class="input-field"></td>
+                <td><input type="text" placeholder="식품 6" class="input-field"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; font-weight: bold; font-size: 18px; color: black;" id="timer">
+                    남은 시간: 3:00
+                </td>
+            </tr>
+        </table>
+        <div class="btn">
+            <button type="reset" class="reset" id="reset-btn">초기화</button>
+            <button type="button" id="submit-btn">제출하기</button>
+        </div>
+        <p id="result" style="margin-top: 20px; font-weight: bold;"></p>
+    </div>
+</body>
+<script>
+    const correctAnswers = ["팥", "현미", "양배추", "오이", "자두", "키위"];
+    let timer = 180; 
+    let timerInterval;
+
+    function startTimer() {
+        const timerElement = document.getElementById("timer");
+
+        timerInterval = setInterval(() => {
+            let minutes = Math.floor(timer / 60);
+            let seconds = timer % 60;
+
+            timerElement.textContent = `남은 시간: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+            timer--;
+
+            if (timer < 0) {
+                clearInterval(timerInterval);
+                alert("Time Over! 시간이 종료되었습니다.");
+                disableAllFunctions();
+            }
+        }, 1000);
+    }
+
+    function disableAllFunctions() {
+        document.getElementById("submit-btn").disabled = true;
+        document.getElementById("reset-btn").disabled = true;
+        const inputs = document.querySelectorAll(".input-field");
+        inputs.forEach(input => input.disabled = true);
+    }
+    
+    const result = document.getElementById("result");
+
+    document.getElementById("submit-btn").addEventListener("click", () => {
+        const inputs = document.querySelectorAll(".input-field");
+        const userAnswers = Array.from(inputs).map(input => input.value.trim());
+        
+        const sortedUserAnswers = userAnswers.sort();
+        const sortedCorrectAnswers = correctAnswers.sort();
+        
+        if (JSON.stringify(sortedUserAnswers) === JSON.stringify(sortedCorrectAnswers)) {
+            result.textContent = "정답입니다! 잘 하셨어요 😊";
+            result.style.color = "green";
+            clearInterval(timerInterval);
+            disableAllFunctions();
+        } else {
+            result.textContent = "오답입니다. 다시 시도해 보세요! 😅";
+            result.style.color = "red";
+        }
+    });
+    document.getElementById("reset-btn").addEventListener("click", () => {
+        const inputs = document.querySelectorAll(".input-field");
+        inputs.forEach(input => input.value = "");
+        result.textContent = "";
+    });
+    startTimer();
+</script>
+</body>
+</html>

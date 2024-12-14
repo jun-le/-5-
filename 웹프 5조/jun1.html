@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사진과 단어 매칭하기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        h1 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .photo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .photo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+        }
+        .photo-item img {
+            width: 150px;
+            height: 150px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .photo-item input {
+            margin-top: 10px;
+            padding: 5px;
+            font-size: 1em;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .submit-btn, .reset-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            color: #fff;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover, .reset-btn:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .word-list {
+            margin-top: 30px;
+            font-size: 1.1em;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .correct {
+            background-color: #c8f7c5; /* 초록색 */
+        }
+        .wrong {
+            background-color: #f7c5c5; /* 빨간색 */
+        }
+    </style>
+</head>
+<body>
+    <h1>변비에 좋은 식품 매칭</h1>
+    <p>다음은 변비에 좋은 식품들입니다. 보기에서 알맞은 단어를 골라 정답을 입력하세요.</p>
+    <div class="photo-container" id="photoContainer">
+        <div class="photo-item">
+            <img src="현미.jpg" alt="현미">
+            <input type="text" placeholder="정답 입력" data-answer="현미">
+        </div>
+        <div class="photo-item">
+            <img src="팥.jpg" alt="팥">
+            <input type="text" placeholder="정답 입력" data-answer="팥">
+        </div>
+        <div class="photo-item">
+            <img src="자두.jpg" alt="자두">
+            <input type="text" placeholder="정답 입력" data-answer="자두">
+        </div>
+        <div class="photo-item">
+            <img src="양배추.jpg" alt="양배추">
+            <input type="text" placeholder="정답 입력" data-answer="양배추">
+        </div>
+        <div class="photo-item">
+            <img src="오이.jpg" alt="오이">
+            <input type="text" placeholder="정답 입력" data-answer="오이">
+        </div>
+        <div class="photo-item">
+            <img src="키위.jpg" alt="키위">
+            <input type="text" placeholder="정답 입력" data-answer="키위">
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="submit-btn" id="submitBtn">제출</button>
+        <button class="reset-btn" id="resetBtn">초기화</button>
+    </div>
+    <div class="result" id="resultMessage"></div>
+
+    <div class="word-list">
+        <strong>보기:</strong> 현미, 팥, 자두, 양배추, 오이, 키위
+    </div>
+
+    <script>
+        const submitButton = document.getElementById("submitBtn");
+        const resetButton = document.getElementById("resetBtn");
+        const resultMessage = document.getElementById("resultMessage");
+        const photoContainer = document.getElementById("photoContainer");
+        const images = Array.from(photoContainer.querySelectorAll(".photo-item"));
+
+        // 제출 버튼 클릭 이벤트
+        submitButton.addEventListener("click", () => {
+            let correctCount = 0;
+            const inputs = document.querySelectorAll(".photo-item input");
+
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim();
+                const correctAnswer = input.dataset.answer;
+
+                if (userAnswer === correctAnswer) {
+                    input.classList.add("correct");
+                    input.classList.remove("wrong");
+                    correctCount++;
+                } else {
+                    input.classList.add("wrong");
+                    input.classList.remove("correct");
+                }
+            });
+
+            resultMessage.textContent = `총 맞춘 개수: ${correctCount} / ${inputs.length}`;
+        });
+
+        // 초기화 버튼 클릭 이벤트
+        resetButton.addEventListener("click", () => {
+            // 입력 초기화
+            const inputs = document.querySelectorAll(".photo-item input");
+            inputs.forEach(input => {
+                input.value = ""; // 입력 초기화
+                input.classList.remove("correct", "wrong"); // 하이라이팅 초기화
+            });
+            resultMessage.textContent = ""; // 결과 메시지 초기화
+
+            // 이미지 섞기
+            shuffleImages();
+        });
+
+        // 이미지 섞기 함수
+        function shuffleImages() {
+            const shuffled = images.sort(() => Math.random() - 0.5); // 랜덤 정렬
+            photoContainer.innerHTML = ""; // 기존 이미지 제거
+            shuffled.forEach(img => {
+                photoContainer.appendChild(img); // 섞인 이미지 다시 추가
+            });
+        }
+
+        // 초기 실행 시 이미지 섞기
+        shuffleImages();
+    </script>
+</body>
+</html>
+
+
+

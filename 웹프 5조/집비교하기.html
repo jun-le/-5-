@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>집 비교하기</title>
+    <style>
+        #answerInput1, #answerInput2, #answerInput3, #answerInput4 {
+            border: 1px solid #ccc;
+            padding: 5px;
+            width: 200px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>집비교하기</h1>
+    <p>혜자씨는 아들집 근처로 이사하려고 합니다.<br>다음의 집들을 비교해보며 문제를 풀어보세요(1~4).</p>
+
+    <img src="집비교하기.jpg" width="400" alt="예시 그림">
+
+    <p>1. 아들집과 지하철이 가장 가까운 곳을 우선순위로 하여 이사하려고 합니다. 어느 집이 가장 적합할까요?</p>
+    <input type="text" id="answerInput1" class="answer-box">
+    <button id="num-1">입력</button>
+
+    <p>2. 애완견을 기르고 있는 동생과 내년부터 같이 살 계획입니다. 어느 집이 가장 적합할까요?</p>
+    <input type="text" id="answerInput2" class="answer-box">
+    <button id="num-2">입력</button>
+
+    <p>3. 예산이 1억원이 있고 대출로 4천 만원을 받을 수 있습니다. 전세로 살 수 있는 집은 어디일까요?</p>
+    <input type="text" id="answerInput3" class="answer-box">
+    <button id="num-3">입력</button>
+
+    <p>4. 월세로 계약하려고 합니다. 보증금 상관없이 월세가 제일 낮은 집은 어디일까요?</p>
+    <input type="text" id="answerInput4" class="answer-box">
+    <button id="num-4">입력</button>
+
+    <script>
+        let correctAnswers = 0;
+
+        function submitAnswer(number) {
+            let newWord;
+            let correct = false;
+            
+            if (number === 1) {
+                newWord = document.querySelector("#answerInput1").value;
+                if (newWord === "A빌라" || newWord === "a빌라") {
+                    correct = true;
+                }
+            } else if (number === 2) {
+                newWord = document.querySelector("#answerInput2").value;
+                if (newWord === "B빌라" || newWord === "b빌라") {
+                    correct = true;
+                }
+            } else if (number === 3) {
+                newWord = document.querySelector("#answerInput3").value;
+                if (newWord === "C빌라" || newWord === "c빌라") {
+                    correct = true;
+                }
+            } else if (number === 4) {
+                newWord = document.querySelector("#answerInput4").value;
+                if (newWord === "B빌라" || newWord === "b빌라") {
+                    correct = true;
+                }
+            }
+
+            if (correct) {
+                alert("정답입니다!");
+                correctAnswers++;
+            } else {
+                alert("오답입니다.");
+            }
+
+            
+            if (correctAnswers === 4) {
+                setTimeout(() => {
+                    alert("축하합니다! 모든 정답을 맞췄습니다!");
+                }, 500);
+            }
+        }
+
+        document.querySelector("#num-1").addEventListener("click", function() {
+            submitAnswer(1);
+        });
+        document.querySelector("#num-2").addEventListener("click", function() {
+            submitAnswer(2);
+        });
+        document.querySelector("#num-3").addEventListener("click", function() {
+            submitAnswer(3);
+        });
+        document.querySelector("#num-4").addEventListener("click", function() {
+            submitAnswer(4);
+        });
+    </script>
+</body>
+</html>
